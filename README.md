@@ -11,4 +11,5 @@ this app built with MVI pattern, clean architecture wasn't necessary as the proj
 - Retrofit for api connection
 - Koin for dependency injection
 - Work manager to handle background tasks
-- Navigation component to handle navigation through the app 
+- Navigation component to handle navigation through the app
+- Event bus to connect between data and presentation

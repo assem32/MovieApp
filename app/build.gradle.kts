@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("androidx.room")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -30,11 +30,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -45,7 +45,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -54,6 +53,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.work.runtime.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -62,26 +63,27 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.retrofit.gson)
+    // Networking
     implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
 
-
-    implementation(project.dependencies.platform(libs.koin.bom))
+    // Dependency Injection (Koin)
+    implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
+    implementation("io.insert-koin:koin-androidx-compose:4.1.1")
+    implementation("io.insert-koin:koin-androidx-compose-navigation:4.1.1")
+    implementation("io.insert-koin:koin-androidx-workmanager:4.1.1")
 
-    val koin_version = "4.1.1"
-    implementation("io.insert-koin:koin-androidx-compose:${koin_version}")
-    implementation("io.insert-koin:koin-androidx-compose-navigation:${koin_version}")
-
-    ksp("androidx.room:room-compiler:2.5.0")
-
-    val room_version = "2.8.4"
-
+    // Database (Room)
+    val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
-
-    // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
-    // See Add the KSP plugin to your project
+    implementation("androidx.room:room-ktx:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
 
+    implementation("io.coil-kt.coil3:coil-compose:3.0.4")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
 
+    val nav_version = "2.9.6"
+
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 }

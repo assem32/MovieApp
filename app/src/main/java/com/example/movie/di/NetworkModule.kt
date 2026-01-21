@@ -1,7 +1,10 @@
 package com.example.movie.di
 
+import androidx.room.Room
 import com.example.movie.data.interceptor.AuthInterceptor
+import com.example.movie.data.local.AppDatabase
 import com.example.movie.data.remote.ApiService
+import com.example.movie.data.repository.MovieRepository
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -22,5 +25,9 @@ val networkModel = module {
             .build()
             .create(ApiService::class.java)
     }
+
+    single { Room.databaseBuilder(get(), AppDatabase::class.java, "movies.db").build() }
+    single { get<AppDatabase>().movieDao() }
+    single { MovieRepository(get(), get()) }
 
 }

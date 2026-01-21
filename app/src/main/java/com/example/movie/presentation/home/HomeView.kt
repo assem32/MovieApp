@@ -1,6 +1,7 @@
 package com.example.movie.presentation.home
 
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,9 +42,10 @@ import kotlinx.coroutines.flow.emptyFlow
 @Composable
 fun HomeView(
     modifier: Modifier = Modifier,
-    state :HomeContract.HomeSata= HomeContract.HomeSata(),
-    onEvent : (HomeContract.HomeEvent) -> Unit= {},
-    effect: Flow<UiSideEffect> = emptyFlow()
+    state: HomeContract.HomeSata = HomeContract.HomeSata(),
+    onEvent: (HomeContract.HomeEvent) -> Unit = {},
+    effect: Flow<UiSideEffect> = emptyFlow(),
+    navigateAction: HomeContract.NavigationAction? = null,
 ) {
     LazyVerticalGrid(
         modifier = modifier.padding(8.dp),
@@ -51,19 +53,26 @@ fun HomeView(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(state.movieList,key = { message -> message.id }) {
-            movieItem ->
-            Card (
+        items(state.movieList, key = { message -> message.id }) { movieItem ->
+            Card(
                 modifier = Modifier
-                    .fillMaxWidth().padding(8.dp),
+                    .fillMaxWidth()
+                    .clickable(
+                        onClick = {
+                            navigateAction?.navigateToDetails(movieItem.id.toString())
+                        }
+                    )
+                    .padding(8.dp),
                 shape = RoundedCornerShape(14.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(bottom = 8.dp).fillMaxWidth(), // Space at the bottom of the card
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
 
-                ) {
+                    ) {
                     AsyncImage(
                         model = "https://image.tmdb.org/t/p/w500${movieItem.poster_path}",
                         contentDescription = movieItem.title,
@@ -72,7 +81,8 @@ fun HomeView(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(250.dp)
-                            .clip(RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp)).aspectRatio(0.67f), // Clip top only
+                            .clip(RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp))
+                            .aspectRatio(0.67f),
                         contentScale = ContentScale.FillWidth
                     )
                     Text(
@@ -84,7 +94,7 @@ fun HomeView(
                         color = Color.White
                     )
 
-                    Row (
+                    Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {

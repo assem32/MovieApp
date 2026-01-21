@@ -15,4 +15,8 @@ class HomeContract {
     sealed class HomeEffect : UiSideEffect{
 
     }
+
+    interface NavigationAction{
+        fun navigateToDetails(id:String)
+    }
 }

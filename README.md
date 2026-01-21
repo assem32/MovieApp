@@ -1,11 +1,11 @@
-## Movie App
+# Movie App
 
 App built to display the latest movies with viewing rate and description for every movie 
 
-# Architecture 
+## Architecture 
 this app built with MVI pattern, clean architecture wasn't necessary as the project is very simple to avoid over engineering.
 
-# Technologies
+## Technologies
 - Jetpack Compose for Friendly UI and easier to maintain
 - Room for local storage
 - Retrofit for api connection

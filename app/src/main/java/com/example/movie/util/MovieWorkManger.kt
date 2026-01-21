@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.movie.data.repository.MovieRepository
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class MovieUpdateWorker(
     appContext: Context,
-    workerParams: WorkerParameters,
-    private val repository: MovieRepository
-) : CoroutineWorker(appContext, workerParams) {
+    workerParams: WorkerParameters
+) : CoroutineWorker(appContext, workerParams), KoinComponent {
+
+    private val repository: MovieRepository by inject()
 
     override suspend fun doWork(): Result {
         return try {

@@ -5,6 +5,7 @@ import androidx.work.Configuration
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.movie.di.networkModel
@@ -51,7 +52,7 @@ class MyApp : Application(),Configuration.Provider {
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "MovieDatabaseUpdate",
-            ExistingPeriodicWorkPolicy.KEEP, // Keep existing if already scheduled
+            ExistingPeriodicWorkPolicy.KEEP,
             movieWorkRequest
         )
     }

@@ -1,7 +1,7 @@
 package com.example.movie.presentation.home
 
 import com.example.movie.data.repository.MovieRepository
-import com.legsy.courses.core.base.BaseViewModel
+import com.example.movie.util.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 
 class HomeViewModel (

@@ -1,4 +1,4 @@
-package com.legsy.courses.core.base
+package com.example.movie.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

@@ -1,5 +1,6 @@
 package com.example.movie.presentation.details
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,12 +16,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,10 +41,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.movie.R
-import com.legsy.courses.core.base.UiSideEffect
+import com.example.movie.util.UiSideEffect
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailsScreen(
     movieId: String,
@@ -49,6 +58,45 @@ fun MovieDetailsScreen(
     LaunchedEffect(Unit) {
         onEvent(DetailsState.DetailsEvent.OnInitScreen(movieId = movieId))
     }
+
+    var viewSheet by remember {
+        mutableStateOf(false)
+    }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
+    LaunchedEffect(effect) {
+        effect.collect { sideEffect ->
+            when (sideEffect) {
+                is DetailsState.DetailsSideEffect.GetDetailError -> {
+                    viewSheet = true
+                }
+            }
+        }
+    }
+
+    if (viewSheet) {
+        ModalBottomSheet(
+            containerColor =  MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            sheetState = sheetState,
+            onDismissRequest = { viewSheet = false }
+        ) {
+            Column (
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp),
+            ){
+                Image(
+                    painter = painterResource(R.drawable.ic_error),
+                    contentDescription = "",
+                    modifier = Modifier.size(100.dp)
+                )
+                Text("Error Happened")
+            }
+        }
+    }
+
 
     Column(
         modifier = modifier

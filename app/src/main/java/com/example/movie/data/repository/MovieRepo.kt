@@ -1,11 +1,12 @@
 package com.example.movie.data.repository
 
-import android.util.Log
 import com.example.movie.data.local.MovieDao
 import com.example.movie.data.model.MovieDetails
 import com.example.movie.data.model.MovieEntity
 import com.example.movie.data.remote.ApiService
+import com.example.movie.util.EventBus
 import com.example.movie.util.Result
+import com.example.movie.util.ShowBottomSheet
 
 class MovieRepository(
     private val apiService: ApiService,
@@ -28,7 +29,7 @@ class MovieRepository(
             }
             movieDao.insertMovies(entities)
         } catch (e: Exception) {
-            Log.e("Repo", "Network fetch failed: ${e.message}")
+            EventBus.publish(ShowBottomSheet("No Internet connection"))
         }
         return movieDao.getAllMovies()
     }

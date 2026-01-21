@@ -1,8 +1,8 @@
 package com.example.movie.presentation.home
 
 import com.example.movie.data.model.MovieEntity
-import com.legsy.courses.core.base.UiEvent
-import com.legsy.courses.core.base.UiSideEffect
+import com.example.movie.util.UiEvent
+import com.example.movie.util.UiSideEffect
 
 class HomeContract {
     data class HomeSata(
